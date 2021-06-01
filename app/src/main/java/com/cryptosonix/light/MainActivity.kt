@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
 
         val cam = getSystemService(Context.CAMERA_SERVICE) as CameraManager
         val switchboard: LinearLayout = findViewById(R.id.switchboard)
-        val lensNames = arrayOf("Front Camera", "Back Camera", "External Camera", "Camera")
+        val lensNames = arrayOf("Front Camera Flash", "Back Camera Flash", "External Camera Flash", "Camera Flash")
 
         for (camera_id in cam.cameraIdList) {
             val props = cam.getCameraCharacteristics(camera_id)
