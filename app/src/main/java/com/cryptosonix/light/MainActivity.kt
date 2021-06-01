@@ -5,7 +5,7 @@ import android.content.Context
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
 import android.os.Bundle
-import android.view.View
+import android.widget.LinearLayout
 import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
 
@@ -16,32 +16,23 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val cam = getSystemService(Context.CAMERA_SERVICE) as CameraManager
+        val switchboard: LinearLayout = findViewById(R.id.switchboard)
+        val lens_names = arrayOf("Front Camera", "Back Camera", "External Camera", "Camera")
+        for (camera_id in cam.cameraIdList) {
+            val props = cam.getCameraCharacteristics(camera_id)
+            if (props.get(CameraCharacteristics.FLASH_INFO_AVAILABLE) == true) {
+                val switch = Switch(this)
 
-        val main: Switch = findViewById(R.id.main)
-        val second: Switch = findViewById(R.id.second)
-        if (cam.getCameraCharacteristics(cam.cameraIdList[0]).get(CameraCharacteristics.FLASH_INFO_AVAILABLE) == true) {
-            main.isChecked = false
-            main.setOnClickListener {
-                if (main.isChecked) {
-                    cam.setTorchMode(cam.cameraIdList[0], true)
-                } else {
-                    cam.setTorchMode(cam.cameraIdList[0], false)
+                switch.text = lens_names[props.get(CameraCharacteristics.LENS_FACING)  ?: 3]
+                switch.setOnClickListener{
+                    if (switch.isChecked) {
+                        cam.setTorchMode(camera_id, true)
+                    } else {
+                        cam.setTorchMode(camera_id, false)
+                    }
                 }
+                switchboard.addView(switch)
             }
-        } else {
-            main.visibility = View.GONE
-        }
-        if (cam.getCameraCharacteristics(cam.cameraIdList[1]).get(CameraCharacteristics.FLASH_INFO_AVAILABLE) == true) {
-            second.isChecked = false
-            second.setOnClickListener {
-                if (second.isChecked) {
-                    cam.setTorchMode(cam.cameraIdList[1], true)
-                } else {
-                    cam.setTorchMode(cam.cameraIdList[1], false)
-                }
-            }
-        } else {
-            second.visibility = View.GONE
         }
     }
 }
