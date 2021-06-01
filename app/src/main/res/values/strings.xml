@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Lights</string>
+    <string name="back_flash">Main Light</string>
+    <string name="front_flash">Second Light</string>
+</resources>
