@@ -17,13 +17,14 @@ class MainActivity : AppCompatActivity() {
 
         val cam = getSystemService(Context.CAMERA_SERVICE) as CameraManager
         val switchboard: LinearLayout = findViewById(R.id.switchboard)
-        val lens_names = arrayOf("Front Camera", "Back Camera", "External Camera", "Camera")
+        val lensNames = arrayOf("Front Camera", "Back Camera", "External Camera", "Camera")
+
         for (camera_id in cam.cameraIdList) {
             val props = cam.getCameraCharacteristics(camera_id)
             if (props.get(CameraCharacteristics.FLASH_INFO_AVAILABLE) == true) {
                 val switch = Switch(this)
+                switch.text = lensNames[props.get(CameraCharacteristics.LENS_FACING)  ?: 3]
 
-                switch.text = lens_names[props.get(CameraCharacteristics.LENS_FACING)  ?: 3]
                 switch.setOnClickListener{
                     if (switch.isChecked) {
                         cam.setTorchMode(camera_id, true)
@@ -31,6 +32,7 @@ class MainActivity : AppCompatActivity() {
                         cam.setTorchMode(camera_id, false)
                     }
                 }
+
                 switchboard.addView(switch)
             }
         }
