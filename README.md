@@ -10,7 +10,9 @@ Lights is an Android app that allows you to individually control the camera flas
 * Android 6.0+
 
 ## Installation
-From the latest [release](../../releases), download the `app-release.apk` file and install it to your device. Android may ask you to turn off a security feature that prevents the installation of apps from sources other than the Play Store. This is only needed during installation so you can choose to turn it back on after installing the app.
+From the latest [release](../../releases), download the `app-release.apk` file and install it to your device. 
+
+NOTE: By default, Android prevents you from installing apps from sources other than the Play Store. This is a security feature. You may be asked to *allow the installation of apps from other sources* before you are able to install Lights (or any other apk file for that matter). You only need to allow this during installation and you can change it back afterwards.
 
 The app should now be ready to use! ✨
 
