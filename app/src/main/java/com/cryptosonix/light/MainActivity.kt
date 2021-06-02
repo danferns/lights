@@ -18,7 +18,12 @@ class MainActivity : AppCompatActivity() {
 
         val cam = getSystemService(Context.CAMERA_SERVICE) as CameraManager
         val switchboard: LinearLayout = findViewById(R.id.switchboard)
-        val lensNames = arrayOf("Front Camera Flash", "Back Camera Flash", "External Camera Flash", "Camera Flash")
+        val lensNames = arrayOf(
+            "Front Camera Flash",
+            "Back Camera Flash",
+            "External Camera Flash",
+            "Camera Flash"
+        )
 
         val availableFlashlights = ArrayList<String>()
         val switches = ArrayList<Switch>()
@@ -31,13 +36,14 @@ class MainActivity : AppCompatActivity() {
                     switch.isChecked = enabled
                 } else { // initialize new flashlight
                     val switch = Switch(this@MainActivity)
-                    switch.text = lensNames[cam.getCameraCharacteristics(cameraId).get(CameraCharacteristics.LENS_FACING)  ?: 3]
+                    switch.text = lensNames[cam.getCameraCharacteristics(cameraId)
+                        .get(CameraCharacteristics.LENS_FACING) ?: 3]
                     switch.isChecked = enabled
 
                     availableFlashlights.add(cameraId)
                     switches.add(switch)
 
-                    switch.setOnClickListener{
+                    switch.setOnClickListener {
                         cam.setTorchMode(cameraId, switch.isChecked)
                     }
                     switchboard.addView(switch)
