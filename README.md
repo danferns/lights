@@ -1,9 +1,9 @@
 # lights
-Lights is an Android app that allows you to individually control the camera flash for any number of camera units available on your device. You can use it to turn on the front and back flash simultaneously for greater illumination. It should, in theory, also support external cameras (testing is welcome!).
+Lights is an Android app built for devices with one or more camera units that have a flashlight. It allows you to control each flashlight independantly. You can use it to turn on the front and back flash simultaneously for greater illumination. It should, in theory, also support external cameras (testing is welcome!). On devices that only have one flashlight, it will work like any other flashlight app.
 
 ## Features
-* Turn on multiple LEDs simultaneously
-* Support for any number of camera flashlights
+* Independant switches for all flashlights
+* Turn on multiple flashlights simultaneously
 * Privacy: No camera permission required
 
 ## Requirements
