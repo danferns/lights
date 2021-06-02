@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
+import android.hardware.camera2.CameraManager.TorchCallback
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.Switch
@@ -19,22 +20,31 @@ class MainActivity : AppCompatActivity() {
         val switchboard: LinearLayout = findViewById(R.id.switchboard)
         val lensNames = arrayOf("Front Camera Flash", "Back Camera Flash", "External Camera Flash", "Camera Flash")
 
-        for (camera_id in cam.cameraIdList) {
-            val props = cam.getCameraCharacteristics(camera_id)
-            if (props.get(CameraCharacteristics.FLASH_INFO_AVAILABLE) == true) {
-                val switch = Switch(this)
-                switch.text = lensNames[props.get(CameraCharacteristics.LENS_FACING)  ?: 3]
+        val availableFlashlights = ArrayList<String>()
+        val switches = ArrayList<Switch>()
 
-                switch.setOnClickListener{
-                    if (switch.isChecked) {
-                        cam.setTorchMode(camera_id, true)
-                    } else {
-                        cam.setTorchMode(camera_id, false)
+        val torchCallback: TorchCallback = object : TorchCallback() {
+            override fun onTorchModeChanged(cameraId: String, enabled: Boolean) {
+                super.onTorchModeChanged(cameraId, enabled)
+                if (cameraId in availableFlashlights) { // a known flashlight changed state
+                    val switch: Switch = switches[availableFlashlights.indexOf(cameraId)]
+                    switch.isChecked = enabled
+                } else { // initialize new flashlight
+                    val switch = Switch(this@MainActivity)
+                    switch.text = lensNames[cam.getCameraCharacteristics(cameraId).get(CameraCharacteristics.LENS_FACING)  ?: 3]
+                    switch.isChecked = enabled
+
+                    availableFlashlights.add(cameraId)
+                    switches.add(switch)
+
+                    switch.setOnClickListener{
+                        cam.setTorchMode(cameraId, switch.isChecked)
                     }
+                    switchboard.addView(switch)
                 }
-
-                switchboard.addView(switch)
             }
         }
+
+        cam.registerTorchCallback(torchCallback, null)
     }
 }
